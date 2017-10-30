@@ -1,0 +1,104 @@
+types: ./types.graphql
+
+# Permission rules
+permissions:
+  # Only authenticated users can **read** nodes of type `Department`
+  - operation: Department.read
+    authenticated: true
+
+  # To **update** a node of type `Deparment`, a `User` must be
+  # authenticated and `ADMIN`
+  - operation: Department.update
+    authenticated: true
+    query: src/permissions/Department.graphql:UpdateDepartment
+
+  # To **delete** a node of type `Deparment`, a `User` must be
+  # authenticated and `ADMIN`
+  - operation: Department.delete
+    authenticated: true
+    query: src/permissions/Department.graphql:DeleteDepartment
+
+  # To **create** a node of type `Deparment`, a `User` must be
+  # authenticated and `ADMIN`
+  - operation: Department.create
+    authenticated: true
+    query: src/permissions/Department.graphql:CreateDepartment
+
+  # Everyone can **read** the non-private fields on
+  # nodes of type `User`
+  - operation: User.read
+    authenticated: true
+    fields: 
+      - firstName
+      - lastName
+      - description
+      - avatar
+      - age
+      - department
+
+  # To **update** the non-private fields on
+  # a node of type `User`, a `User` must be:
+  # authenticated and either the "owner" of the `User` or an `ADMIN` 
+  # (see the permission query `UpdateUserData` in src/permissions/User.graphql)
+  - operation: User.update
+    authenticated: true
+    query: src/permissions/User.graphql:UpdateUserData  
+    fields:
+      - email
+      - password
+      - firstName
+      - lastName
+      - description
+      - avatar
+      - age
+      - department
+
+  # To **update** the fields `role` on a node of type `User`,
+  # a `User` must be: authenticated and an `ADMIN`
+  # (see the permission query `UpdateUserRole` in src/permissions/User.graphql)
+  - operation: User.update
+    authenticated: true
+    query: src/permissions/User.graphql:UpdateUserRole
+    fields:
+      - role  
+
+  # To **delete** a node of type `User`, a `User` must be:
+  # authenticated and either the "owner" of the `User` or an `ADMIN` 
+  # (see the permission query `DeleteUser` in src/permissions/User.graphql)
+  - operation: User.delete
+    authenticated: true
+    query: src/permissions/User.graphql:DeleteUser
+
+  # To connect and disconnect a `Department` node with a `User` node via the
+  # `DepartmentEmployees` relation, a `User` must be authenticated and `ADMIN`
+  - operation: DepartmentEmployees.connect
+    authenticated: true
+    query: src/permissions/DepartmentEmployees.graphql:addToDepartmentEmployees
+  - operation: DepartmentEmployees.disconnect
+    authenticated: true
+    query: src/permissions/DepartmentEmployees.graphql:removeFromDepartmentEmployees
+
+# Serverless functions implementing "email-password"-based authentication
+functions:
+
+  # `resolver` function to create a new `User` node
+  signup:
+    type: resolver
+    schema: src/email-password/signup.graphql
+    handler:
+      code: src/email-password/signup.js
+
+  # `resolver` function to authenticate an existing `User` node
+  authenticate:
+    type: resolver
+    schema: src/email-password/authenticate.graphql
+    handler:
+      code: src/email-password/authenticate.js
+
+  # `resolver` function to check whether a request is authenticated
+  loggedInUser:
+    type: resolver
+    schema: src/email-password/loggedInUser.graphql
+    handler:
+      code: src/email-password/loggedInUser.js
+

@@ -1,0 +1,26 @@
+# To **create** a node of type `Deparment`, a `User` must be
+# authenticated and `ADMIN`
+query CreateDepartment ($user_id: ID!) {
+  SomeUserExists(filter: {
+    id: $user_id,
+    role: ADMIN
+  })
+}
+
+# To **update** a node of type `Deparment`, a `User` must be
+# authenticated and `ADMIN`
+query UpdateDepartment ($user_id: ID!) {
+  SomeUserExists(filter: {
+    id: $user_id,
+    role: ADMIN
+  })
+}
+
+# To **delete** a node of type `Deparment`, a `User` must be
+# authenticated and `ADMIN`
+query DeleteDepartment ($user_id: ID!) {
+  SomeUserExists(filter: {
+    id: $user_id,
+    role: ADMIN
+  })
+}

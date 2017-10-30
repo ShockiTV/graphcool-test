@@ -1,0 +1,50 @@
+# To update fields on
+# a node of type `User`, a `User` must be either the "owner" 
+# of the `User` _OR_ an `ADMIN`
+# this current user check is currently broken
+query UpdateUserData ($user_id: ID!, $node_id: ID!) {
+  SomeUserExists(filter: {
+    OR: [{
+      AND: [{
+          id: $user_id,
+        },
+        {
+          id: $node_id,
+        }
+      ]
+    },
+    {
+      id: $user_id,
+      role: ADMIN
+    }]
+  })
+}
+
+# To update the field `role` on 
+# a node of type `User`, a `User` must be an `ADMIN`
+query UpdateUserRole ($user_id: ID!) {
+  SomeUserExists(filter: {
+    id: $user_id,
+    role: ADMIN
+  })
+}
+
+# To delete a node of type `User`, a `User` must be 
+# either the "owner" of the `User` _OR_ an `ADMIN`
+query DeleteUser ($user_id: ID!) {
+  SomeUserExists(filter: {
+    OR: [{
+      AND: [{
+          id: $user_id,
+        },
+        {
+          id: $node_id,
+        }
+      ]
+    },
+    {
+      id: $user_id,
+      role: ADMIN
+    }]
+  })
+}

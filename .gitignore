@@ -1,0 +1,46 @@
+.env
+*.log
+*.pot
+*.py[co]
+.idea/
+*.iml
+*.sqlite3
+*.sqlite3-journal
+local_settings.py
+kickresume/settings/local.py
+kickresume/static/assets/
+kickresume/data/
+kickresume/build/
+media/*
+whoosh_index/
+webpack_cache/
+version.txt
+
+.vagrant
+
+#nodejs
+node_modules
+npm-debug.log
+
+# Vim-specific
+.*.swp
+Session.vim
+
+# Sublime-specific
+*.sublime-project
+*.sublime-workspace
+
+# PyLint
+.pylintrc
+
+# Mac specific
+__MACOSX
+.DS_Store
+
+__pycache__
+
+celerybeat-schedule.*
+
+.python-version
+.env
+/.project

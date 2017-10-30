@@ -1,0 +1,27 @@
+enum Role {
+  ADMIN
+  CUSTOMER
+}
+
+type User @model {
+  id: ID! @isUnique
+
+  role: Role!
+
+  firstName: String
+  lastName: String
+  description: String
+  avatar: String
+  age: Int
+  department: Department @relation(name: "DepartmentEmployees")
+
+  email: String @isUnique
+  password: String
+}
+
+type Department @model {
+  id: ID! @isUnique
+  name: String! @isUnique
+
+  employees: [User!]! @relation(name: "DepartmentEmployees")
+}
